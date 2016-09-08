@@ -41,6 +41,4 @@ func (cfg *Config) Parse() {
 		// handle error
 		fmt.Println("Error parsing Toml")
 	}
-
-	fmt.Printf("%v", cfg)
 }
