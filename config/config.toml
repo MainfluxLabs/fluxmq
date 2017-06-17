@@ -1,3 +1,0 @@
-### Mqtt Config
-MqttHost = "0.0.0.0"
-MqttPort = 1883

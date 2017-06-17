@@ -9,36 +9,34 @@
 package main
 
 import (
-	"fmt"
-	"strconv"
-	"strings"
 	"flag"
-	"os"
-	"github.com/mainflux/fluxmq/server"
-	"github.com/mainflux/fluxmq/config"
+	"fmt"
 	"github.com/fatih/color"
+	"github.com/mainflux/fluxmq/server"
+	"os"
+	"strings"
 )
 
 var usageStr = `
 Usage: fluxmq [options]
 Server Options:
-    -a, --addr <host>                Bind to host address (default: 0.0.0.0)
-    -p, --port <port>                Use port for clients (default: 4222)
-    -P, --pid <file>                 File to store PID
-    -c, --config <file>              Configuration file
+    -a, --addr <host>               Bind to host address (default: 0.0.0.0)
+    -p, --port <port>               Use port for clients (default: 4222)
+    -P, --pid <file>                File to store PID
+    -c, --config <file>             Configuration file
 Logging Options:
-    -l, --log <file>                 File to redirect log output
-    -T, --logtime                    Timestamp log entries (default: true)
-    -D, --debug                      Enable debugging output
-    -V, --trace                      Trace the raw protocol
-    -DV                              Debug and trace
+    -l, --log <file>                File to redirect log output
+    -T, --logtime                   Timestamp log entries (default: true)
+    -D, --debug                     Enable debugging output
+    -V, --trace                     Trace the raw protocol
+    -DV								Debug and trace
 Authorization Options:
-        --user <user>                User required for connections
-        --pass <password>            Password required for connections
-        --auth <token>               Authorization token required for connections
+	--user <user>					User required for connections
+    --pass <password>				Password required for connections
+    --auth <token>					Authorization token required for connections
 Common Options:
-    -h, --help                       Show this message
-    -v, --version                    Show version
+    -h, --help                      Show this message
+    -v, --version                   Show version
 `
 
 // usage will print out the flag options for the server.
@@ -48,7 +46,7 @@ func usage() {
 }
 
 func main() {
-		// Server Options
+	// Server Options
 	opts := server.Options{}
 
 	var showVersion bool
@@ -56,8 +54,8 @@ func main() {
 	var configFile string
 
 	// Parse flags
-	flag.IntVar(&opts.Port, "port", 0, "Port to listen on.")
-	flag.IntVar(&opts.Port, "p", 0, "Port to listen on.")
+	flag.IntVar(&opts.Port, "port", 1883, "Port to listen on.")
+	flag.IntVar(&opts.Port, "p", 1883, "Port to listen on.")
 	flag.StringVar(&opts.Host, "host", "", "Network host to listen on.")
 	flag.StringVar(&opts.Host, "h", "", "Network host to listen on.")
 	flag.StringVar(&opts.Host, "net", "", "Network host to listen on.")
@@ -105,13 +103,8 @@ func main() {
 		}
 	}
 
-	// Parse config
-	var cfg config.Config
-	cfg.Parse()
-
 	// Print banner
 	color.Cyan(banner)
-	color.Cyan("Magic happens on port " + strconv.Itoa(cfg.MqttPort))
 
 	// Create the server with appropriate options.
 	s := server.New(&opts)

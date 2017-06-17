@@ -10,39 +10,38 @@ package server
 
 import (
 	"fmt"
-    "net"
-    "os"
+	"io/ioutil"
+	"net"
+	"os"
+	"os/signal"
+	"strconv"
 	"sync"
 	"time"
-	"strconv"
-	"io/ioutil"
-	"os/signal"
 )
-
 
 // Server is our main struct.
 type Server struct {
-	mu            sync.Mutex
-	trace         bool
-	debug         bool
-	running       bool
-	listener      net.Listener
+	mu       sync.Mutex
+	trace    bool
+	debug    bool
+	running  bool
+	listener net.Listener
 	//clients       map[uint64]*client
-	totalClients  uint64
-	done          chan bool
-	start         time.Time
-	opts          *Options
+	totalClients uint64
+	done         chan bool
+	start        time.Time
+	opts         *Options
 }
 
 // New will setup a new server struct after parsing the options.
 func New(opts *Options) *Server {
 
 	s := &Server{
-		done:	make(chan bool, 1),
-		start:	time.Now(),
-		debug:	opts.Debug,
-		trace:	opts.Trace,
-		opts:	opts,
+		done:  make(chan bool, 1),
+		start: time.Now(),
+		debug: opts.Debug,
+		trace: opts.Trace,
+		opts:  opts,
 	}
 
 	s.mu.Lock()
@@ -99,7 +98,7 @@ func (s *Server) logPid() {
 // Start up the server, this will block.
 // Start via a Go routine if needed.
 func (s *Server) Start() {
-	fmt.Println("Starting FluxMQ version %s", VERSION)
+	fmt.Printf("Starting FluxMQ version %s\n", VERSION)
 	//fmt.Println("Go build version %s", s.info.GoVersion)
 
 	// Avoid RACE between Start() and Shutdown()
@@ -120,11 +119,11 @@ func (s *Server) Start() {
 func (s *Server) AcceptLoop() {
 
 	hp := net.JoinHostPort(s.opts.Host, strconv.Itoa(s.opts.Port))
-	fmt.Println("Listening for client connections on %s", hp)
+	fmt.Printf("Listening for client connections on %s\n", hp)
 
 	l, e := net.Listen("tcp", hp)
 	if e != nil {
-		fmt.Println("Error listening on port: %s, %q", hp, e)
+		fmt.Printf("Error listening on port: %s, %q\n", hp, e)
 		return
 	}
 
@@ -184,4 +183,3 @@ func (s *Server) AcceptLoop() {
 	fmt.Println("Server Exiting..")
 	s.done <- true
 }
-
