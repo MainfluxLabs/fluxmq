@@ -22,18 +22,8 @@ Usage: fluxmq [options]
 Server Options:
     -a, --addr <host>               Bind to host address (default: 0.0.0.0)
     -p, --port <port>               Use port for clients (default: 4222)
-    -P, --pid <file>                File to store PID
-    -c, --config <file>             Configuration file
 Logging Options:
     -l, --log <file>                File to redirect log output
-    -T, --logtime                   Timestamp log entries (default: true)
-    -D, --debug                     Enable debugging output
-    -V, --trace                     Trace the raw protocol
-    -DV								Debug and trace
-Authorization Options:
-	--user <user>					User required for connections
-    --pass <password>				Password required for connections
-    --auth <token>					Authorization token required for connections
 Common Options:
     -h, --help                      Show this message
     -v, --version                   Show version
@@ -51,28 +41,12 @@ func main() {
 
 	var showVersion bool
 	var debugAndTrace bool
-	var configFile string
 
 	// Parse flags
 	flag.IntVar(&opts.Port, "port", 1883, "Port to listen on.")
 	flag.IntVar(&opts.Port, "p", 1883, "Port to listen on.")
-	flag.StringVar(&opts.Host, "host", "", "Network host to listen on.")
-	flag.StringVar(&opts.Host, "h", "", "Network host to listen on.")
-	flag.StringVar(&opts.Host, "net", "", "Network host to listen on.")
-	flag.BoolVar(&opts.Debug, "D", false, "Enable Debug logging.")
-	flag.BoolVar(&opts.Debug, "debug", false, "Enable Debug logging.")
-	flag.BoolVar(&opts.Trace, "V", false, "Enable Trace logging.")
-	flag.BoolVar(&opts.Trace, "trace", false, "Enable Trace logging.")
-	flag.BoolVar(&debugAndTrace, "DV", false, "Enable Debug and Trace logging.")
-	flag.BoolVar(&opts.Logtime, "T", true, "Timestamp log entries.")
-	flag.BoolVar(&opts.Logtime, "logtime", true, "Timestamp log entries.")
-	flag.StringVar(&opts.Username, "user", "", "Username required for connection.")
-	flag.StringVar(&opts.Password, "pass", "", "Password required for connection.")
-	flag.StringVar(&opts.Authorization, "auth", "", "Authorization token required for connection.")
-	flag.StringVar(&configFile, "c", "", "Configuration file.")
-	flag.StringVar(&configFile, "config", "", "Configuration file.")
-	flag.StringVar(&opts.PidFile, "P", "", "File to store process pid.")
-	flag.StringVar(&opts.PidFile, "pid", "", "File to store process pid.")
+	flag.StringVar(&opts.Host, "addr", "0.0.0.0", "Network host to listen on.")
+	flag.StringVar(&opts.Host, "a", "0.0.0.0", "Network host to listen on.")
 	flag.StringVar(&opts.LogFile, "l", "", "File to store logging output.")
 	flag.StringVar(&opts.LogFile, "log", "", "File to store logging output.")
 	flag.BoolVar(&showVersion, "version", false, "Print version information.")
